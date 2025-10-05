@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE } from '../config';
 
 export default function StudentMonitoring() {
   const [reports, setReports] = useState([]);
@@ -6,7 +7,7 @@ export default function StudentMonitoring() {
 
   async function loadReports() {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/student/reports', {
+    const res = await fetch(`${API_BASE}/api/student/reports`, {
       headers: { Authorization: 'Bearer ' + token }
     });
     if (res.ok) {

@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
+import { API_BASE } from '../config';
 export default function Register(){
  const [form,setForm]=useState({username:'',full_name:'',password:'',role:'student',stream:''});
  const [message,setMessage]=useState('');
- const API_BASE = process.env.REACT_APP_API || '';
  function update(e){setForm({...form,[e.target.name]:e.target.value})}
  async function submit(e){
   e.preventDefault();

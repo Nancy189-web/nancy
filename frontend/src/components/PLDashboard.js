@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import ReportsList from './ReportsList';
 import StudentMonitoring from './StudentMonitoring';
 import Rating from './Rating';
+import { API_BASE } from '../config';
 
 export default function PLDashboard(){
  const [courses,setCourses]=useState([]);
@@ -12,22 +13,22 @@ export default function PLDashboard(){
  const [newCourse,setNewCourse]=useState({faculty_id:1,name:'',code:'',stream:''});
  async function loadCourses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/courses?q='+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/courses?q=`+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setCourses(await res.json());}
  }
  async function loadLecturers(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/users?role=lecturer',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/users?role=lecturer`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setLecturers(await res.json());}
  }
  async function loadClasses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/classes',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/classes`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setClasses(await res.json());}
  }
  async function loadLectures(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/reports',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/reports`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setLectures(await res.json());}
  }
  useEffect(()=>{loadCourses();loadLecturers();loadClasses();loadLectures();},[]);
@@ -35,12 +36,12 @@ export default function PLDashboard(){
  async function addCourse(e){
   e.preventDefault();
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/courses',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(newCourse)});
+  const res=await fetch(`${API_BASE}/api/courses`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(newCourse)});
   if(res.ok){loadCourses();setNewCourse({faculty_id:1,name:'',code:'',stream:''});}
  }
  async function assignLecturer(courseId,lecturerId){
   const token=localStorage.getItem('token');
-  await fetch('/api/courses/'+courseId,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({lecturer_id:lecturerId})});
+  await fetch(`${API_BASE}/api/courses/`+courseId,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({lecturer_id:lecturerId})});
   loadCourses();
  }
  return(

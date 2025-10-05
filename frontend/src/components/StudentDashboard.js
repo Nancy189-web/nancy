@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Rating from './Rating';
+import { API_BASE } from '../config';
 
 export default function StudentDashboard() {
   const [reports, setReports] = useState([]);
@@ -8,7 +9,7 @@ export default function StudentDashboard() {
   // Load student reports (monitoring)
   async function loadReports() {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/reports', {
+    const res = await fetch(`${API_BASE}/api/reports`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     if (res.ok) {

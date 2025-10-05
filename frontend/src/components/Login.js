@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import './Login.css';
 import Register from './Register';
+import { API_BASE } from '../config';
 export default function Login(){
   const [activeTab, setActiveTab] = useState('login');
   const [isRemembered, setIsRemembered] = useState(false);
@@ -14,7 +15,7 @@ export default function Login(){
 
   async function handleLogin(e) {
     e.preventDefault();
-    const res = await fetch('/api/login', {
+    const res = await fetch(`${API_BASE}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

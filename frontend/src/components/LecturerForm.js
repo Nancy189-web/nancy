@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { useAuth } from '../AuthContext';
+import { API_BASE } from '../config';
 export default function LecturerForm(){
  const { full_name } = useAuth();
  const [form,setForm]=useState({faculty_id:'',course_id:'',class_id:'',lecturer_name:'',week_of_reporting:'',lecture_date:'',topic_taught:'',learning_outcomes:'',recommendations:'',actual_students_present:0,venue:'',scheduled_time:''});
@@ -11,17 +12,17 @@ export default function LecturerForm(){
  function update(e){setForm({...form,[e.target.name]:e.target.value})}
  async function loadFaculties(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/faculties',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/faculties`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setFaculties(await res.json());}
  }
  async function loadCourses(facultyId){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/courses?faculty_id='+facultyId,{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/courses?faculty_id=`+facultyId,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setCourses(await res.json());}
  }
  async function loadClasses(courseId){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/classes?course_id='+courseId,{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/classes?course_id=`+courseId,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setClasses(await res.json());}
  }
  useEffect(()=>{loadFaculties();},[]);
@@ -44,7 +45,7 @@ export default function LecturerForm(){
  async function submit(e){
   e.preventDefault();
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/reports',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(form)});
+  const res=await fetch(`${API_BASE}/api/reports`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(form)});
   if(res.ok){setMessage('Report submitted');}else setMessage('Error');}
  return(
   <form onSubmit={submit}>

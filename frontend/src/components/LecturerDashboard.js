@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import LecturerForm from './LecturerForm';
 import ReportsList from './ReportsList';
+import { API_BASE } from '../config';
 
 export default function LecturerDashboard(){
  const [classes,setClasses]=useState([]);
@@ -11,22 +12,22 @@ export default function LecturerDashboard(){
  const [classForm,setClassForm]=useState({course_id:'',name:'',venue:'',scheduled_time:'',total_registered:0});
  async function loadClasses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/classes',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/classes`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setClasses(await res.json());}
  }
  async function loadCourses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/courses',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/courses`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setCourses(await res.json());}
  }
  async function loadNotifications(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/notifications',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/notifications`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setNotifications(await res.json());}
  }
  async function loadRatings(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/ratings',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/ratings`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setRatings(await res.json());}
  }
  useEffect(()=>{loadClasses(); loadCourses(); loadNotifications(); loadRatings();},[]);
@@ -67,7 +68,7 @@ export default function LecturerDashboard(){
                     <form onSubmit={async(e)=>{
                       e.preventDefault();
                       const token=localStorage.getItem('token');
-                      const res=await fetch('/api/classes',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(classForm)});
+                      const res=await fetch(`${API_BASE}/api/classes`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(classForm)});
                       if(res.ok){setClassForm({course_id:'',name:'',venue:'',scheduled_time:'',total_registered:0}); loadClasses();}
                     }}>
                       <select className="form-control mb-2" value={classForm.course_id} onChange={e=>setClassForm({...classForm,course_id:e.target.value})} required>

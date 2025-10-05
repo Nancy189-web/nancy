@@ -1,17 +1,18 @@
 import React,{useState,useEffect} from 'react';
+import { API_BASE } from '../config';
 export default function ReportsList(){
  const [reports,setReports]=useState([]);
  const [q,setQ]=useState('');
  async function load(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/reports?q='+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/reports?q=`+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setReports(await res.json());}
  }
  useEffect(()=>{load();},[]);
  function search(e){e.preventDefault();load();}
  async function exportExcel(){
   const token = localStorage.getItem('token');
-  const response = await fetch('/api/reports/export?q='+encodeURIComponent(q), {
+  const response = await fetch(`${API_BASE}/api/reports/export?q=`+encodeURIComponent(q), {
     headers: {'Authorization': 'Bearer ' + token}
   });
   if (!response.ok) {

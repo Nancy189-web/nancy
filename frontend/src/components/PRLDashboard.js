@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import ReportsList from './ReportsList';
 import StudentMonitoring from './StudentMonitoring';
 import Rating from './Rating';
+import { API_BASE } from '../config';
 
 export default function PRLDashboard(){
  const [courses,setCourses]=useState([]);
@@ -11,24 +12,24 @@ export default function PRLDashboard(){
  const [classes,setClasses]=useState([]);
  async function loadCourses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/courses?q='+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/courses?q=`+encodeURIComponent(q),{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setCourses(await res.json());}
  }
  async function loadReports(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/reports',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/reports`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setReports(await res.json());}
  }
  async function loadClasses(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/classes',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/classes`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setClasses(await res.json());}
  }
  useEffect(()=>{loadCourses();loadReports();loadClasses();},[]);
  function search(e){e.preventDefault();loadCourses();}
  async function addFeedback(reportId){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/reports/'+reportId+'/feedback',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({feedback:feedbacks[reportId]})});
+  const res=await fetch(`${API_BASE}/api/reports/`+reportId+'/feedback',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({feedback:feedbacks[reportId]})});
   if(res.ok){loadReports();setFeedbacks({...feedbacks,[reportId]:''});}
  }
  return(

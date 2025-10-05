@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import { API_BASE } from '../config';
 
 export default function Rating(){
  const [lecturers,setLecturers]=useState([]);
@@ -6,14 +7,14 @@ export default function Rating(){
  const [message,setMessage]=useState('');
  async function loadLecturers(){
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/users?role=lecturer',{headers:{'Authorization':'Bearer '+token}});
+  const res=await fetch(`${API_BASE}/api/users?role=lecturer`,{headers:{'Authorization':'Bearer '+token}});
   if(res.ok){setLecturers(await res.json());}
  }
  useEffect(()=>{loadLecturers();},[]);
  async function submit(e){
   e.preventDefault();
   const token=localStorage.getItem('token');
-  const res=await fetch('/api/ratings',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(rating)});
+  const res=await fetch(`${API_BASE}/api/ratings`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(rating)});
   if(res.ok){setMessage('Rating submitted');}else setMessage('Error');
  }
  return(
