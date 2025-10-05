@@ -15,7 +15,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
 // --- MySQL connection pool ---
 const pool = mysql.createPool({
-  host: "localhost",
+  host: " https://nancy-kz71.onrender.com",
   port: 3306,
   user: "root",
   password: "Icare@02",
